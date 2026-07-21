@@ -5,6 +5,7 @@ const Field = ({
   type = 'text',
   onInput,
   value,
+  ref,
 }) => {
   return (
     <div className={`field ${className}`}>
@@ -19,6 +20,7 @@ const Field = ({
         autoComplete="off"
         onInput={onInput}
         value={value}
+        ref={ref}
       />
     </div>
   );
