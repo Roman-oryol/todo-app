@@ -5,6 +5,8 @@ const TodoList = ({
   onDeleteTaskButtonClick,
   onTaskCompleteChange,
   filteredTasks,
+  firstIncompleteTaskRef,
+  firstIncompleteTaskId,
 }) => {
   const hasTasks = tasks.length > 0;
   const isEmptyFilteredTasks = filteredTasks?.length === 0;
@@ -23,6 +25,9 @@ const TodoList = ({
         <TodoItem
           className="todo__item"
           key={task.id}
+          ref={
+            task.id === firstIncompleteTaskId ? firstIncompleteTaskRef : null
+          }
           {...task}
           onDeleteTaskButtonClick={onDeleteTaskButtonClick}
           onTaskCompleteChange={onTaskCompleteChange}

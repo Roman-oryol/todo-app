@@ -2,20 +2,23 @@ const TodoItem = ({
   className = '',
   id,
   title,
-  isDone,
+  isDone = false,
   onDeleteTaskButtonClick,
   onTaskCompleteChange,
+  ref,
 }) => {
+  const isCompleted = Boolean(isDone);
+
   return (
-    <li className={`todo-item ${className}`}>
+    <li className={`todo-item ${className}`} ref={ref}>
       <input
         className="todo-item__checkbox"
         id={id}
         type="checkbox"
-        checked={isDone}
+        checked={isCompleted}
         onChange={({ target }) => onTaskCompleteChange(id, target.checked)}
       />
-      <label className="todo-item__label" htmlFor="task-1">
+      <label className="todo-item__label" htmlFor={id}>
         {title}
       </label>
       <button
