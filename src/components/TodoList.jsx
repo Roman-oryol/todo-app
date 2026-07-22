@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import TodoItem from './TodoItem';
 
 const TodoList = ({
@@ -37,4 +38,4 @@ const TodoList = ({
   );
 };
 
-export default TodoList;
+export default memo(TodoList);

@@ -1,3 +1,5 @@
+import { memo } from 'react';
+
 const TodoItem = ({
   className = '',
   id,
@@ -47,4 +49,4 @@ const TodoItem = ({
   );
 };
 
-export default TodoItem;
+export default memo(TodoItem);
