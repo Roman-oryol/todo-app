@@ -1,5 +1,6 @@
 import { Check } from "lucide-react";
 import { Trash2 } from "lucide-react";
+import { memo } from "react";
 
 const TaskItem = ({
   task,
@@ -12,8 +13,8 @@ const TaskItem = ({
     <li
       className={`flex items-center gap-3 rounded-lg border px-3 py-2 transition-colors duration-500 ${
         isHighlighted
-          ? "border-emerald-500 bg-emerald-500/10"
-          : "border-zinc-700 bg-zinc-800"
+          ? "border-emerald-500 bg-emerald-500/10 "
+          : "border-zinc-700 bg-zinc-800 hover:bg-zinc-700"
       }`}
       ref={ref}
     >
@@ -45,4 +46,4 @@ const TaskItem = ({
   );
 };
 
-export default TaskItem;
+export default memo(TaskItem);

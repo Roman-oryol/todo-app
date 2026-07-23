@@ -1,15 +1,18 @@
 import { Target } from "lucide-react";
 import { useState } from "react";
 import DeleteAllDialog from "./DeleteAllDialog";
+import { useTaskContext } from "../context/useTaskContext";
 
-const TaskListSummary = ({
-  completedTasks,
-  totalTasks,
-  deleteAllTasks,
-  scrollToFirstIncomplete,
-  firstIncompleteTaskId,
-}) => {
+const TaskListSummary = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const {
+    completedTasks,
+    tasks,
+    deleteAllTasks,
+    scrollToFirstIncomplete,
+    firstIncompleteTaskId,
+  } = useTaskContext();
+  const totalTasks = tasks.length;
 
   const handleConfirm = () => {
     deleteAllTasks();

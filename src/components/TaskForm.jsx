@@ -1,8 +1,10 @@
 import { useState } from "react";
 import Form from "./Form";
 import FormField from "./FormField";
+import { useTaskContext } from "../context/useTaskContext";
 
-const TaskForm = ({ addTask, newTaskFieldRef }) => {
+const TaskForm = () => {
+  const { addTask, newTaskFieldRef } = useTaskContext();
   const [newTaskTitle, setNewTaskTitle] = useState("");
 
   const trimmedTitle = newTaskTitle.trim();

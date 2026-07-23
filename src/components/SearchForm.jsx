@@ -1,8 +1,12 @@
 import { Search } from "lucide-react";
 import Form from "./Form";
 import FormField from "./FormField";
+import { useTaskContext } from "../context/useTaskContext";
 
-const SearchForm = ({ searchQuery, onSearchChange, isEmptyTasks }) => {
+const SearchForm = () => {
+  const { searchQuery, setSearchQuery, tasks } = useTaskContext();
+  const isEmptyTasks = tasks.length === 0;
+
   return (
     <Form>
       <FormField
@@ -11,7 +15,7 @@ const SearchForm = ({ searchQuery, onSearchChange, isEmptyTasks }) => {
         label="Поиск задачи"
         icon={<Search size={16} />}
         value={searchQuery}
-        onFormFieldInput={(e) => onSearchChange(e.target.value)}
+        onFormFieldInput={(e) => setSearchQuery(e.target.value)}
         isEmptyTasks={isEmptyTasks}
       />
     </Form>

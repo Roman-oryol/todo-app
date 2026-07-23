@@ -1,17 +1,21 @@
+import { useTaskContext } from "../context/useTaskContext";
 import TaskItem from "./TaskItem";
 
-const TaskList = ({
-  tasks = [],
-  filteredTasks,
-  toggleTaskCompleted,
-  deleteTask,
-  firstIncompleteTaskRef,
-  firstIncompleteTaskId,
-  highlightedTaskId,
-}) => {
-  const isEmptyTasks = tasks.length === 0;
+const TaskList = () => {
+  const {
+    tasks,
+    filteredTasks,
+    firstIncompleteTaskRef,
+    firstIncompleteTaskId,
+    toggleTaskCompleted,
+    deleteTask,
+    highlightedTaskId,
+  } = useTaskContext();
 
-  if (filteredTasks?.length === 0) {
+  const isEmptyTasks = tasks.length === 0;
+  const displayedTasks = filteredTasks ?? tasks;
+
+  if (displayedTasks.length === 0 && !isEmptyTasks) {
     return (
       <div className="mx-auto w-[60%] text-center text-zinc-500">
         Задача не найдена
@@ -21,18 +25,6 @@ const TaskList = ({
 
   return (
     <>
-      <style>{`
-
-        /* Dark themed custom scrollbar for the task list */
-        .task-list-scroll::-webkit-scrollbar { width: 10px; height: 10px;}
-        .task-list-scroll::-webkit-scrollbar-track { background: #1f2937; border-radius: 8px; }
-        .task-list-scroll::-webkit-scrollbar-thumb { background: #374151; border-radius: 8px; }
-        .task-list-scroll::-webkit-scrollbar-thumb:hover { background: #4b5563; }
-
-        /* Firefox */
-        .task-list-scroll { scrollbar-width: thin; scrollbar-color: #374151 #1f2937; }
-      `}</style>
-
       <ul className="task-list-scroll grid gap-3 overflow-auto">
         {isEmptyTasks ? (
           <div className="mx-auto w-[60%] text-center text-zinc-500">
@@ -41,11 +33,13 @@ const TaskList = ({
             Добавьте первую задачу
           </div>
         ) : (
-          (filteredTasks ?? tasks).map((task) => (
+          displayedTasks.map((task) => (
             <TaskItem
               key={task.id}
               ref={
-                firstIncompleteTaskId == task.id ? firstIncompleteTaskRef : null
+                firstIncompleteTaskId === task.id
+                  ? firstIncompleteTaskRef
+                  : null
               }
               isHighlighted={task.id === highlightedTaskId}
               onToggleComplete={toggleTaskCompleted}
