@@ -25,7 +25,7 @@ const TaskList = () => {
 
   return (
     <>
-      <ul className="task-list-scroll grid gap-3 overflow-auto">
+      <ul className="task-list-scroll grid gap-3 overflow-auto pb-0.5">
         {isEmptyTasks ? (
           <div className="mx-auto w-[60%] text-center text-zinc-500">
             Список задач пока пуст.
