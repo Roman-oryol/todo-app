@@ -7,11 +7,14 @@ const FormField = ({
   onFormFieldInput,
   newTaskFieldRef,
   isEmptyTasks,
+  error,
 }) => {
+  const borderClass = error ? "border-red-400" : `border-zinc-700 ${className}`;
+
   return (
     <div className="relative flex-1">
       <input
-        className={`peer w-full rounded-lg border border-zinc-700 bg-zinc-800 px-3 py-2 text-zinc-100 transition-colors focus:outline-none ${className}`}
+        className={`peer w-full rounded-lg border bg-zinc-800 px-3 py-2 text-zinc-100 transition-colors focus:outline-none ${borderClass}`}
         type={type}
         placeholder=" "
         id={label}
@@ -30,6 +33,11 @@ const FormField = ({
       {icon && (
         <span className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-zinc-500 peer-not-placeholder-shown:hidden">
           {icon}
+        </span>
+      )}
+      {error && (
+        <span className="absolute top-full left-3 text-[12px] text-red-400">
+          {error}
         </span>
       )}
     </div>

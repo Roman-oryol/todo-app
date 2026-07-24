@@ -6,8 +6,12 @@ import { useTaskContext } from "../context/useTaskContext";
 const TaskForm = () => {
   const { addTask, newTaskFieldRef } = useTaskContext();
   const [newTaskTitle, setNewTaskTitle] = useState("");
+  const [touched, setTouched] = useState(false);
 
   const trimmedTitle = newTaskTitle.trim();
+  const isEmpty =
+    touched && newTaskTitle.length > 0 && trimmedTitle.length === 0;
+  const error = isEmpty ? "Задача не может быть пустой" : "";
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -16,6 +20,12 @@ const TaskForm = () => {
 
     addTask(trimmedTitle);
     setNewTaskTitle("");
+    setTouched(false);
+  };
+
+  const handleInput = (e) => {
+    setNewTaskTitle(e.target.value);
+    setTouched(true);
   };
 
   return (
@@ -24,8 +34,9 @@ const TaskForm = () => {
         label="Новая задача"
         className="focus:border-emerald-600"
         value={newTaskTitle}
-        onFormFieldInput={(e) => setNewTaskTitle(e.target.value)}
+        onFormFieldInput={handleInput}
         newTaskFieldRef={newTaskFieldRef}
+        error={error}
       />
       <button
         className={`cursor-not-allowed rounded-lg bg-emerald-700 px-4 py-2 font-semibold text-zinc-100 transition-colors ${!trimmedTitle ? "opacity-40" : "cursor-pointer hover:bg-emerald-600 active:translate-y-0.5"}`}
