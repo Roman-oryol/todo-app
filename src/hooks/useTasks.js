@@ -1,27 +1,29 @@
-// useTasks.js
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useLocalStorageState } from "./useLocalStorageState";
-
-const DEFAULT_TASKS = [
-  {
-    id: crypto.randomUUID(),
-    title: "Купить молоко, очень, очень, очень много молока",
-    isCompleted: false,
-  },
-  {
-    id: crypto.randomUUID(),
-    title: "Убраться в квартире",
-    isCompleted: true,
-  },
-];
+import tasksAPI from "../api/tasksAPI";
 
 export const useTasks = () => {
-  const [tasks, setTasks] = useLocalStorageState("tasks", DEFAULT_TASKS);
+  const [tasks, setTasks] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const newTaskFieldRef = useRef(null);
 
   useEffect(() => {
+    const controller = new AbortController();
     newTaskFieldRef.current?.focus();
+
+    const fetchTasks = async () => {
+      try {
+        const data = await tasksAPI.getAll(controller.signal);
+        setTasks(data);
+      } catch (error) {
+        console.error("Failed to fetch tasks:", error);
+      }
+    };
+
+    fetchTasks();
+
+    return () => {
+      controller.abort();
+    };
   }, []);
 
   const filteredTasks = searchQuery.trim()
@@ -35,31 +37,58 @@ export const useTasks = () => {
     0,
   );
 
-  const addTask = (title) => {
-    setTasks((curr) => [
-      ...curr,
-      { id: crypto.randomUUID(), title, isCompleted: false },
-    ]);
-    newTaskFieldRef.current?.focus();
-    setSearchQuery("");
+  const addTask = async (title) => {
+    const newTask = { title, isCompleted: false };
+
+    try {
+      const addedTask = await tasksAPI.add(newTask);
+      setTasks((curr) => [...curr, addedTask]);
+      newTaskFieldRef.current?.focus();
+      setSearchQuery("");
+    } catch (error) {
+      console.error("Failed to add task:", error);
+    }
   };
 
   const toggleTaskCompleted = useCallback(
-    (id, isCompleted) => {
-      setTasks((curr) =>
-        curr.map((task) => (task.id === id ? { ...task, isCompleted } : task)),
-      );
+    async (id, isCompleted) => {
+      try {
+        const toggledTask = await tasksAPI.toggleComplete(id, isCompleted);
+        setTasks((prevTasks) =>
+          prevTasks.map((task) => (task.id === id ? toggledTask : task)),
+        );
+      } catch (error) {
+        console.error("Failed to toggle task:", error);
+      }
     },
     [setTasks],
   );
 
   const deleteTask = useCallback(
-    (id) => setTasks((curr) => curr.filter((task) => task.id !== id)),
+    async (id) => {
+      try {
+        await tasksAPI.delete(id);
+        setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
+      } catch (error) {
+        console.error("Failed to delete task:", error);
+      }
+    },
     [setTasks],
   );
 
-  const deleteAllTasks = () => {
-    setTasks([]);
+  const deleteAllTasks = async () => {
+    const { deletedIds, failedCount } = await tasksAPI.deleteAll(tasks);
+
+    if (deletedIds.length > 0) {
+      setTasks((prevTasks) =>
+        prevTasks.filter((task) => !deletedIds.includes(task.id)),
+      );
+    }
+
+    if (failedCount > 0) {
+      console.error(`Failed to delete ${failedCount} task(s)`);
+    }
+
     setSearchQuery("");
   };
 

@@ -1,6 +1,11 @@
 const Form = ({ children, className, onFormSubmit }) => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onFormSubmit();
+  };
+
   return (
-    <form className={`flex ${className}`} onSubmit={onFormSubmit}>
+    <form className={`flex ${className}`} onSubmit={handleSubmit}>
       {children}
     </form>
   );

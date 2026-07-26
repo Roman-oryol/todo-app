@@ -13,9 +13,7 @@ const TaskForm = () => {
     touched && newTaskTitle.length > 0 && trimmedTitle.length === 0;
   const error = isEmpty ? "Задача не может быть пустой" : "";
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
+  const handleSubmit = () => {
     if (!trimmedTitle) return;
 
     addTask(trimmedTitle);
