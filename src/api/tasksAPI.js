@@ -3,23 +3,29 @@ const headers = {
   "Content-Type": "application/json",
 };
 
+const handleResponse = (res) => {
+  if (!res.ok) {
+    throw new Error(`HTTP ${res.status}`);
+  }
+  return res.json();
+};
+
 const tasksAPI = {
   getAll: async (signal) => {
-    const res = await fetch(URL, { signal });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    return await res.json();
+    return await fetch(URL, { signal }).then(handleResponse);
+  },
+
+  getById: async (id, signal) => {
+    return fetch(`${URL}/${id}`, { signal }).then(handleResponse);
   },
 
   add: async (task, signal) => {
-    const res = await fetch(URL, {
+    return await fetch(URL, {
       method: "POST",
       headers,
       body: JSON.stringify(task),
       signal,
-    });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-
-    return await res.json();
+    }).then(handleResponse);
   },
 
   delete: async (id, signal) => {
@@ -48,15 +54,12 @@ const tasksAPI = {
   },
 
   toggleComplete: async (id, isCompleted, signal) => {
-    const res = await fetch(`${URL}/${id}`, {
+    return await fetch(`${URL}/${id}`, {
       method: "PATCH",
       headers,
       body: JSON.stringify({ isCompleted }),
       signal,
-    });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-
-    return res.json();
+    }).then(handleResponse);
   },
 };
 
