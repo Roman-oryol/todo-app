@@ -1,8 +1,13 @@
+import { navigate } from "../router/navigate";
+
 const Link = ({ to, children, ...rest }) => {
   const handleClick = (e) => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1) {
+      return;
+    }
+
     e.preventDefault();
-    window.history.pushState({}, "", to);
-    window.dispatchEvent(new PopStateEvent("popstate"));
+    navigate(to);
   };
 
   return (

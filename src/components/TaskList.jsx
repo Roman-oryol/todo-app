@@ -4,6 +4,7 @@ import TaskItem from "./TaskItem";
 const TaskList = () => {
   const {
     tasks,
+    isLoading,
     filteredTasks,
     firstIncompleteTaskRef,
     firstIncompleteTaskId,
@@ -14,6 +15,14 @@ const TaskList = () => {
 
   const isEmptyTasks = tasks.length === 0;
   const displayedTasks = filteredTasks ?? tasks;
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center py-6">
+        <div className="h-8 w-8 animate-spin rounded-full border-[3px] border-zinc-800 border-t-emerald-500" />
+      </div>
+    );
+  }
 
   if (displayedTasks.length === 0 && !isEmptyTasks) {
     return (

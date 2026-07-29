@@ -34,7 +34,7 @@ const matchPath = (path, route) => {
     if (element.startsWith(":")) {
       const paramName = element.slice(1);
       params[paramName] = pathParts[i];
-    } else if (element !== pathParts[i]) null;
+    } else if (element !== pathParts[i]) return null;
   }
 
   return params;

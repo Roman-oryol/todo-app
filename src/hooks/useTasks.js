@@ -3,6 +3,7 @@ import tasksAPI from "../api/tasksAPI";
 
 export const useTasks = () => {
   const [tasks, setTasks] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const newTaskFieldRef = useRef(null);
 
@@ -16,6 +17,8 @@ export const useTasks = () => {
         setTasks(data);
       } catch (error) {
         console.error("Failed to fetch tasks:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -94,11 +97,12 @@ export const useTasks = () => {
 
   return {
     tasks,
-    setTasks,
+    isLoading,
     searchQuery,
     filteredTasks,
     completedTasks,
     newTaskFieldRef,
+    setTasks,
     addTask,
     setSearchQuery,
     toggleTaskCompleted,
