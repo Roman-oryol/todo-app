@@ -15,9 +15,10 @@ export const useTasks = () => {
       try {
         const data = await tasksAPI.getAll(controller.signal);
         setTasks(data);
+        setIsLoading(false);
       } catch (error) {
+        if (error.name === "AbortError") return;
         console.error("Failed to fetch tasks:", error);
-      } finally {
         setIsLoading(false);
       }
     };

@@ -13,7 +13,7 @@ export const useIncompleteTaskScroll = (tasks) => {
 
     firstIncompleteTaskRef.current?.scrollIntoView({
       behavior: "smooth",
-      block: "center",
+      block: "nearest",
     });
 
     setHighlightedTaskId(firstIncompleteTaskId);

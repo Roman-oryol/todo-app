@@ -1,3 +1,4 @@
+import { AnimatePresence } from "motion/react";
 import { useTaskContext } from "../context/useTaskContext";
 import TaskItem from "./TaskItem";
 
@@ -33,16 +34,16 @@ const TaskList = () => {
   }
 
   return (
-    <>
-      <ul className="task-list-scroll grid gap-3 overflow-auto pb-0.5">
-        {isEmptyTasks ? (
-          <div className="mx-auto w-[60%] text-center text-zinc-500">
-            Список задач пока пуст.
-            <br />
-            Добавьте первую задачу
-          </div>
-        ) : (
-          displayedTasks.map((task) => (
+    <ul className="task-list-scroll relative grid min-h-0 content-start gap-3 overflow-x-hidden overflow-y-auto pb-0.5">
+      {isEmptyTasks ? (
+        <div className="mx-auto w-[60%] text-center text-zinc-500">
+          Список задач пока пуст.
+          <br />
+          Добавьте первую задачу
+        </div>
+      ) : (
+        <AnimatePresence mode="popLayout" initial={false}>
+          {displayedTasks.map((task) => (
             <TaskItem
               key={task.id}
               ref={
@@ -55,10 +56,10 @@ const TaskList = () => {
               task={task}
               onTaskDelete={deleteTask}
             />
-          ))
-        )}
-      </ul>
-    </>
+          ))}
+        </AnimatePresence>
+      )}
+    </ul>
   );
 };
 

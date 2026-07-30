@@ -1,5 +1,5 @@
-import { Check } from "lucide-react";
-import { Trash2 } from "lucide-react";
+import { Check, Trash2 } from "lucide-react";
+import { motion } from "motion/react";
 import { memo } from "react";
 import Link from "./Link";
 
@@ -11,8 +11,13 @@ const TaskItem = ({
   isHighlighted,
 }) => {
   return (
-    <li
-      className={`flex items-center gap-3 rounded-lg border px-3 py-2 transition-colors duration-500 ${
+    <motion.li
+      layout
+      initial={{ opacity: 0, y: -8, scale: 0.98 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      exit={{ opacity: 0, x: 0, scale: 0.96 }}
+      transition={{ duration: 0.2, ease: "easeOut" }}
+      className={`flex scroll-my-3 items-center gap-3 rounded-lg border px-3 py-2 transition-colors duration-500 ${
         isHighlighted
           ? "border-emerald-500 bg-emerald-500/10 "
           : "border-zinc-700 bg-zinc-800 "
@@ -53,7 +58,7 @@ const TaskItem = ({
       >
         <Trash2 size={16} />
       </button>
-    </li>
+    </motion.li>
   );
 };
 
