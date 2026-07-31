@@ -42,7 +42,7 @@ const TaskItem = ({
         </label>
       </div>
       <Link
-        to={`/tasks/${task.id}`}
+        to={`tasks/${task.id}`}
         className={`min-w-0 flex-1 wrap-break-word transition-colors hover:text-emerald-400 ${
           task.isCompleted
             ? "text-zinc-500 line-through "

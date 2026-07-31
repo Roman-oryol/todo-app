@@ -1,3 +1,4 @@
+import { BASE_URL } from "../constants/baseUrl";
 import { navigate } from "../router/navigate";
 
 const Link = ({ to, children, ...rest }) => {
@@ -11,7 +12,7 @@ const Link = ({ to, children, ...rest }) => {
   };
 
   return (
-    <a href={to} onClick={handleClick} {...rest}>
+    <a href={`${BASE_URL}${to}`} onClick={handleClick} {...rest}>
       {children}
     </a>
   );
